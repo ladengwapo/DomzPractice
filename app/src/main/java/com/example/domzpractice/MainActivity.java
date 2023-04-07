@@ -37,11 +37,16 @@ public class MainActivity extends AppCompatActivity {
 
         SessionManager sessionManager = new SessionManager(this);
 
+        instance = new Instance(this);
+
+        for(Student e: getStudent()){
+            instance.insertStudentData(this, e);
+        }
+
         if(sessionManager.isLoggedIn()){
             Intent intent = new Intent(MainActivity.this, Dashboard.class);
             startActivity(intent);
         }else {
-            instance = new Instance(this);
 
             btnSignUp.setOnClickListener(e -> {
                 Intent intent = new Intent(MainActivity.this, Signup.class);

@@ -26,7 +26,7 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        homeFragment = new HomeFragment(this);
+        homeFragment = new HomeFragment();
         addStudentFragment = new AddStudentFragment();
         settingFragment =  new SettingFragment();
 

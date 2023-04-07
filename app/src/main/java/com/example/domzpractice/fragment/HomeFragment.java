@@ -22,6 +22,7 @@ import com.example.domzpractice.model.Student;
 import com.example.domzpractice.model.StudentRecycleView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -44,28 +45,6 @@ public class HomeFragment extends Fragment {
     private List<Student> copyStudents;
     private StudentRecycleView studentRecycleView;
 
-    public HomeFragment(Context context) {
-        this.context = context;
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AddStudentFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AddStudentFragment newInstance(String param1, String param2) {
-        AddStudentFragment fragment = new AddStudentFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +61,7 @@ public class HomeFragment extends Fragment {
 
         instance = new Instance(context);
         students = instance.getStudentData(context);
-
+        Collections.sort(students);
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView = view.findViewById(R.id.studentRecycleView);
 
@@ -95,12 +74,18 @@ public class HomeFragment extends Fragment {
         filterData = new ArrayList<Student>();
         copyStudents = new ArrayList<>(students);
         etSearch = view.findViewById(R.id.etSearch);
-        etSearch.addTextChangedListener(new SearchStudent());
-
+        etSearch.addTextChangedListener(new SearchStudent(container.getContext()));
         return view;
     }
 
     private class SearchStudent implements TextWatcher {
+
+
+        private Context context;
+
+        public SearchStudent(Context context) {
+            this.context = context;
+        }
 
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -130,6 +115,7 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(context, "Student not found", Toast.LENGTH_SHORT).show();
                 }
             }
+            Collections.sort(filterData);
             studentRecycleView.filterItem(filterData);
         }
 
